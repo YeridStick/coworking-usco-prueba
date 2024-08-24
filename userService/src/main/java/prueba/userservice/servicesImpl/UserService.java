@@ -1,32 +1,43 @@
 package prueba.userservice.servicesImpl;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import prueba.userservice.dto.in.UserAuthDto;
 import prueba.userservice.dto.in.UserCreationDto;
 import prueba.userservice.dto.out.UserResponseDto;
 import prueba.userservice.entity.RolesEntity;
 import prueba.userservice.entity.UserEntity;
+import prueba.userservice.exception.ExcepcionPersonalizada;
+import prueba.userservice.helpers.JwtHelpers;
 import prueba.userservice.repository.RolesRepository;
 import prueba.userservice.repository.UserRepository;
 import prueba.userservice.services.IUserservice;
 
+import java.util.Optional;
+
 @Service
+@Slf4j
 public class UserService implements IUserservice {
 
+    private final UserRepository userRepository;
+    private final JwtHelpers jwtHelpers;
+    private final RolesRepository rolesRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository userRepository, JwtHelpers jwtHelpers, RolesRepository rolesRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+        this.userRepository = userRepository;
+        this.jwtHelpers = jwtHelpers;
+        this.rolesRepository = rolesRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
+    }
 
-    @Autowired
-    private RolesRepository rolesRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
+    @Override
     public UserResponseDto createUser(UserCreationDto userDto) {
         if (userRepository.findByCorreo(userDto.getCorreo()).isPresent()) {
             throw new RuntimeException("El usuario con este correo ya existe");
@@ -45,6 +56,7 @@ public class UserService implements IUserservice {
         return modelMapper.map(savedUser, UserResponseDto.class);
     }
 
+    @Override
     public UserResponseDto changeUserRole(String userId, String newRole) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -57,4 +69,28 @@ public class UserService implements IUserservice {
 
         return modelMapper.map(updatedUser, UserResponseDto.class);
     }
+
+    @Override
+    public UserAuthDto findByEmail(String email) {
+        UserEntity user = userRepository.findByCorreo(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con el correo: " + email));
+
+        UserAuthDto userAuthDto = modelMapper.map(user, UserAuthDto.class);
+
+        userAuthDto.setRoll(user.getTipoRoll().getIdRoll());
+
+        return userAuthDto;
+    }
+
+    public String getUserById(String userId){
+        String Correo = "";
+        try {
+            Optional<UserEntity> use = userRepository.findById(userId);
+            if (use.isPresent()) Correo = use.get().getCorreo();
+        } catch (Exception e) {
+            log.error("Correo no encontrado");
+        }
+        return Correo;
+    }
+
 }

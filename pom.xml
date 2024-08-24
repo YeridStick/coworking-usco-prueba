@@ -19,8 +19,8 @@
 	<modules>
 		<module>authService</module>
 		<module>userService</module>
-		<!--<module>reservaService</module>
-		<module>reporteService</module>-->
+		<module>reservaService</module>
+		<!--<module>reporteService</module>-->
 		<!--<module>apiGateway</module>-->
 		<module>eurekaServer</module>
 		<!--<module>configServer</module>-->

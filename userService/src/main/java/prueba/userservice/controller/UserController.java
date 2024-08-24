@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import prueba.userservice.dto.in.UserAuthDto;
 import prueba.userservice.dto.in.UserCreationDto;
+import prueba.userservice.dto.out.UserDto;
 import prueba.userservice.dto.out.UserResponseDto;
 import prueba.userservice.entity.UserEntity;
 import prueba.userservice.services.IUserservice;
@@ -36,5 +38,16 @@ public class UserController {
     public ResponseEntity<UserResponseDto> changeUserRole(@PathVariable String userId, @RequestParam String newRole) {
         UserResponseDto updatedUser = userService.changeUserRole(userId, newRole);
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserAuthDto> getByEmail(@PathVariable String email) {
+        UserAuthDto user =  userService.findByEmail(email);
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/{id}")
+    public String getUserById(@PathVariable String id) {
+        return userService.getUserById(id);
     }
 }
