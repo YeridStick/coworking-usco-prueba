@@ -1,5 +1,6 @@
 package prueba.reservaservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,7 @@ public class TipoRecursoEntity {
     private Integer cantidadDisponible;
 
     @OneToMany(mappedBy = "tipoRecurso", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<RecursoEntity> recursos = new ArrayList<>();
 
     public enum CategoriaRecurso {

@@ -21,40 +21,42 @@ import java.util.stream.Collectors;
 public class ReservaService implements IReservaService {
 
     private final RecursoRepository recursoRepository;
+    private final RecursoService recursoService;
     private final ReservaRepository reservaRepository;
     private final NotificationService notificationService;
-    private final UserServiceClient userServiceClient;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ReservaService(RecursoRepository recursoRepository, ReservaRepository reservaRepository, NotificationService notificationService,
-                          UserServiceClient userServiceClient, ModelMapper modelMapper) {
+    public ReservaService(RecursoRepository recursoRepository, RecursoService recursoService, ReservaRepository reservaRepository,
+                          NotificationService notificationService, ModelMapper modelMapper) {
         this.recursoRepository = recursoRepository;
+        this.recursoService = recursoService;
         this.reservaRepository = reservaRepository;
         this.notificationService = notificationService;
-        this.userServiceClient = userServiceClient;
         this.modelMapper = modelMapper;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public ReservaResponseDto createReserva(ReservaRequestDto reservaDto) {
-        if (userServiceClient.getUserById(reservaDto.getUsuarioId()).isEmpty()) {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-
         RecursoEntity recurso = recursoRepository.findById(reservaDto.getRecursoId())
                 .orElseThrow(() -> new RuntimeException("Recurso no encontrado"));
 
-        ReservaEntity reserva = new ReservaEntity();
+        if (recurso.getEstado() != RecursoEntity.EstadoRecurso.DISPONIBLE) {
+            throw new RuntimeException("El recurso no está disponible para reserva");
+        }
 
-        reserva.setRecurso(recurso);
+        ReservaEntity reserva = new ReservaEntity();
         reserva.setUsuarioId(reservaDto.getUsuarioId());
+        reserva.setRecurso(recurso);
         reserva.setFechaInicio(reservaDto.getFechaInicio());
         reserva.setFechaFin(reservaDto.getFechaFin());
+        reserva.setEstado("CONFIRMADA");
 
         ReservaEntity savedReserva = reservaRepository.save(reserva);
-        notificationService.sendReservationUpdate(savedReserva);
+
+        recursoService.updateRecursoEstado(recurso.getId(), RecursoEntity.EstadoRecurso.RESERVADO);
+
         return modelMapper.map(savedReserva, ReservaResponseDto.class);
     }
 
@@ -63,18 +65,38 @@ public class ReservaService implements IReservaService {
     public ReservaResponseDto updateReserva(Long id, ReservaRequestDto updatedReservaDto) {
         ReservaEntity reserva = reservaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
-        modelMapper.map(updatedReservaDto, reserva);
+
+        if (!reserva.getRecurso().getId().equals(updatedReservaDto.getRecursoId())) {
+            recursoService.updateRecursoEstado(reserva.getRecurso().getId(), RecursoEntity.EstadoRecurso.DISPONIBLE);
+
+            RecursoEntity nuevoRecurso = recursoRepository.findById(updatedReservaDto.getRecursoId())
+                    .orElseThrow(() -> new RuntimeException("Nuevo recurso no encontrado"));
+
+            if (nuevoRecurso.getEstado() != RecursoEntity.EstadoRecurso.DISPONIBLE) {
+                throw new RuntimeException("El nuevo recurso no está disponible para reserva");
+            }
+
+            recursoService.updateRecursoEstado(nuevoRecurso.getId(), RecursoEntity.EstadoRecurso.RESERVADO);
+
+            reserva.setRecurso(nuevoRecurso);
+        }
+
+        reserva.setFechaInicio(updatedReservaDto.getFechaInicio());
+        reserva.setFechaFin(updatedReservaDto.getFechaFin());
+        reserva.setUsuarioId(updatedReservaDto.getUsuarioId());
+
         ReservaEntity savedReserva = reservaRepository.save(reserva);
         notificationService.sendReservationUpdate(savedReserva);
         return modelMapper.map(savedReserva, ReservaResponseDto.class);
     }
+
 
     @Transactional(readOnly = true)
     @Override
     public List<ReservaResponseDto> getAllReservas() {
         return reservaRepository.findAll().stream()
                 .map(reserva -> modelMapper.map(reserva, ReservaResponseDto.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -85,12 +107,22 @@ public class ReservaService implements IReservaService {
         return modelMapper.map(reserva, ReservaResponseDto.class);
     }
 
-    @Transactional
     @Override
-    public void deleteReserva(Long id) {
-        if (!reservaRepository.existsById(id)) {
-            throw new RuntimeException("Reserva no encontrada");
+    @Transactional
+    public ReservaResponseDto cancelReserva(Long reservaId) {
+        ReservaEntity reserva = reservaRepository.findById(reservaId)
+                .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
+
+        if (!"CONFIRMADA".equals(reserva.getEstado())) {
+            throw new RuntimeException("Solo se pueden cancelar reservas confirmadas");
         }
-        reservaRepository.deleteById(id);
+
+        reserva.setEstado("CANCELADA");
+        reservaRepository.delete(reserva);
+
+        // Actualizar el estado del recurso a DISPONIBLE
+        recursoService.updateRecursoEstado(reserva.getRecurso().getId(), RecursoEntity.EstadoRecurso.DISPONIBLE);
+
+        return modelMapper.map(reserva, ReservaResponseDto.class);
     }
 }

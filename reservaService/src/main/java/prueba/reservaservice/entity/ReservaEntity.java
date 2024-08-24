@@ -1,5 +1,6 @@
 package prueba.reservaservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class ReservaEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RecursoId", nullable = false)
+    @JsonIgnore
     private RecursoEntity recurso;
 
     @Column(name = "FechaInicio", nullable = false)

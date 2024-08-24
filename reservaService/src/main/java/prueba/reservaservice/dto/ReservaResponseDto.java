@@ -16,6 +16,4 @@ public class ReservaResponseDto {
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
     private String estado;
-    private LocalDateTime fechaCreacion;
-    private LocalDateTime fechaActualizacion;
 }

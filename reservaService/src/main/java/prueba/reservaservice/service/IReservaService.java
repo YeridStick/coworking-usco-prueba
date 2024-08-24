@@ -11,5 +11,5 @@ public interface IReservaService {
     ReservaResponseDto updateReserva(Long id, ReservaRequestDto updatedReservaDto);
     List<ReservaResponseDto> getAllReservas();
     ReservaResponseDto getReservaById(Long id);
-    void deleteReserva(Long id);
+    ReservaResponseDto cancelReserva(Long reservaId);
 }

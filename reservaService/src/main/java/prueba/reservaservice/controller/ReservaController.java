@@ -56,8 +56,7 @@ public class ReservaController {
     // Solo ADMIN puede eliminar una reserva
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteReserva(@PathVariable Long id) {
-        reservaService.deleteReserva(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ReservaResponseDto> deleteReserva(@PathVariable Long id) {
+        return ResponseEntity.ok(reservaService.cancelReserva(id));
     }
 }

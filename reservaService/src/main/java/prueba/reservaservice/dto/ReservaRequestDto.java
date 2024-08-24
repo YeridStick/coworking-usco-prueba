@@ -14,5 +14,4 @@ public class ReservaRequestDto {
     private Long recursoId;
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
-    private String estado;
 }

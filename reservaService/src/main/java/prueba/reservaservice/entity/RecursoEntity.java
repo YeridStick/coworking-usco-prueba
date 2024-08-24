@@ -1,5 +1,7 @@
 package prueba.reservaservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +20,7 @@ public class RecursoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipo_recurso_id", nullable = false)
+    @JsonBackReference
     private TipoRecursoEntity tipoRecurso;
 
     @Column(name = "codigo_identificacion", unique = true)
@@ -28,6 +31,7 @@ public class RecursoEntity {
     private EstadoRecurso estado = EstadoRecurso.DISPONIBLE;
 
     @OneToMany(mappedBy = "recurso", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ReservaEntity> reservas = new ArrayList<>();
 
     public enum EstadoRecurso {
