@@ -27,8 +27,6 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/reservas/**").authenticated()
-                                .requestMatchers("/api/recursos/**").hasRole("ADMIN")
                                 .anyRequest().permitAll()
                 )
                 .sessionManagement(sessionManagement ->

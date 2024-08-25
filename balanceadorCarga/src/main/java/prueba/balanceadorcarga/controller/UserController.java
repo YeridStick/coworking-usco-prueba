@@ -2,6 +2,7 @@ package prueba.balanceadorcarga.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import prueba.balanceadorcarga.dto.userDto.in.UserAuthDto;
 import prueba.balanceadorcarga.dto.userDto.in.UserCreationDto;
@@ -26,6 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/user")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<UserResponseDto> createUser(@RequestBody UserCreationDto userCreationDto) {
         return userServices.createUser(userCreationDto);
     }
@@ -36,6 +38,7 @@ public class UserController {
     }
 
     @GetMapping("/role/{idRol}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> getRoleCargo(@PathVariable String idRol) {
         return userServices.printRoleCargo(idRol);
     }
