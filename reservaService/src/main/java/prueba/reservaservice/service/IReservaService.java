@@ -12,4 +12,5 @@ public interface IReservaService {
     List<ReservaResponseDto> getAllReservas();
     ReservaResponseDto getReservaById(Long id);
     ReservaResponseDto cancelReserva(Long reservaId);
+    List<ReservaResponseDto> getReservasByEmail(String email);
 }

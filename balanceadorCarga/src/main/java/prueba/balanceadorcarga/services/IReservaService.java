@@ -23,6 +23,7 @@ public interface IReservaService {
     ReservaResponseDto getReservaById(Long id);
 
     ReservaResponseDto deleteReserva(Long id);
+    List<ReservaResponseDto> getReservasByEmail(String email);
 
     // Recursos
     List<RecursoResponseDto> getAllRecursos();

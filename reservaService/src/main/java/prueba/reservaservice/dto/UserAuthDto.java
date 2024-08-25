@@ -1,4 +1,4 @@
-package prueba.balanceadorcarga.dto.userDto.in;
+package prueba.reservaservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

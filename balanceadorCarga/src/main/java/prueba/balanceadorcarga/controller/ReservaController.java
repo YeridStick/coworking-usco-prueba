@@ -45,36 +45,37 @@ public class ReservaController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<ReservaResponseDto>> getAllReservas() {
         List<ReservaResponseDto> response = reservaService.getAllReservas();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<ReservaResponseDto> getReservaById(@PathVariable Long id) {
         ReservaResponseDto response = reservaService.getReservaById(id);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<ReservaResponseDto> deleteReserva(@PathVariable Long id) {
         ReservaResponseDto response = reservaService.deleteReserva(id);
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/correo-reservas")
+    public ResponseEntity<List<ReservaResponseDto>> getReservasByEmail(@RequestParam String email) {
+        List<ReservaResponseDto> reservas = reservaService.getReservasByEmail(email);
+        return ResponseEntity.ok(reservas);
+    }
+
     // Recursos
     @GetMapping("/recursos")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<RecursoResponseDto>> getAllRecursos() {
         List<RecursoResponseDto> response = reservaService.getAllRecursos();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/recursos/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<RecursoResponseDto> getRecursoById(@PathVariable Long id) {
         RecursoResponseDto response = reservaService.getRecursoById(id);
         return ResponseEntity.ok(response);
@@ -88,7 +89,6 @@ public class ReservaController {
     }
 
     @GetMapping("/recursos/{recursoId}/disponibilidad")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<RecursoDisponibilidadDto> getRecursoDisponibilidad(
             @PathVariable Long recursoId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime desde,
@@ -107,21 +107,18 @@ public class ReservaController {
     }
 
     @GetMapping("/recursos/estados")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<RecursoEntity.EstadoRecurso>> getAllEstadosRecurso() {
         List<RecursoEntity.EstadoRecurso> response = reservaService.getAllEstadosRecurso();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/recursos/por-tipo/{tipoRecursoId}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<RecursoResponseDto>> getRecursosPorTipo(@PathVariable Long tipoRecursoId) {
         List<RecursoResponseDto> response = reservaService.getRecursosPorTipo(tipoRecursoId);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/recursos/{recursoId}/estado")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<String> getEstadoRecurso(@PathVariable Long recursoId) {
         String response = reservaService.getEstadoRecurso(recursoId);
         return ResponseEntity.ok(response);
@@ -143,28 +140,24 @@ public class ReservaController {
     }
 
     @GetMapping("/tipos-recurso/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<TipoRecursoResponseDto> getTipoRecursoById(@PathVariable Long id) {
         TipoRecursoResponseDto response = reservaService.getTipoRecursoById(id);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/tipos-recurso")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<TipoRecursoResponseDto>> getAllTiposRecurso() {
         List<TipoRecursoResponseDto> response = reservaService.getAllTiposRecurso();
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/tipos-recurso/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Void> deleteTipoRecurso(@PathVariable Long id) {
         reservaService.deleteTipoRecurso(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/tipos-recurso/categorias")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<TipoRecursoEntity.CategoriaRecurso>> getAllCategorias() {
         List<TipoRecursoEntity.CategoriaRecurso> response = reservaService.getAllCategorias();
         return ResponseEntity.ok(response);
@@ -182,7 +175,6 @@ public class ReservaController {
 
     // Categorías
     @GetMapping("/categorias-recurso")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<String>> getCategorias() {
         List<String> response = reservaService.getCategorias();
         return ResponseEntity.ok(response);

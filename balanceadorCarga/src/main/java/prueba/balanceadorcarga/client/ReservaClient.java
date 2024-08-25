@@ -34,6 +34,9 @@ public interface ReservaClient {
     @DeleteMapping("/api/reservas/{id}")
     ResponseEntity<ReservaResponseDto> deleteReserva(@PathVariable Long id);
 
+    @GetMapping("/api/reservas/correo-reservas")
+    ResponseEntity<List<ReservaResponseDto>> getReservasByEmail(@RequestParam String email);
+
     // recursos
 
     @GetMapping("/api/recursos")

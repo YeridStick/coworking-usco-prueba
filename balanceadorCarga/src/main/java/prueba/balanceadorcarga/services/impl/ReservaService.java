@@ -1,7 +1,9 @@
 package prueba.balanceadorcarga.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import prueba.balanceadorcarga.client.ReservaClient;
 import prueba.balanceadorcarga.dto.reservaDTO.RecursoEntity;
 import prueba.balanceadorcarga.dto.reservaDTO.ReservaRequestDto;
@@ -49,6 +51,10 @@ public class ReservaService implements IReservaService {
     @Override
     public ReservaResponseDto deleteReserva(Long id) {
         return reservaClient.deleteReserva(id).getBody();
+    }
+    @Override
+    public List<ReservaResponseDto> getReservasByEmail(String email) {
+        return reservaClient.getReservasByEmail(email).getBody();
     }
 
     // Recursos

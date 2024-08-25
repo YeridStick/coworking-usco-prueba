@@ -2,11 +2,14 @@ package prueba.reservaservice.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import prueba.reservaservice.client.UserServiceClient;
 import prueba.reservaservice.dto.ReservaRequestDto;
 import prueba.reservaservice.dto.ReservaResponseDto;
+import prueba.reservaservice.dto.UserAuthDto;
 import prueba.reservaservice.dto.user.UserDto;
 import prueba.reservaservice.entity.RecursoEntity;
 import prueba.reservaservice.entity.ReservaEntity;
@@ -25,15 +28,17 @@ public class ReservaService implements IReservaService {
     private final ReservaRepository reservaRepository;
     private final NotificationService notificationService;
     private final ModelMapper modelMapper;
+    private final UserServiceClient userServiceClient;
 
     @Autowired
     public ReservaService(RecursoRepository recursoRepository, RecursoService recursoService, ReservaRepository reservaRepository,
-                          NotificationService notificationService, ModelMapper modelMapper) {
+                          NotificationService notificationService, ModelMapper modelMapper, UserServiceClient userServiceClient) {
         this.recursoRepository = recursoRepository;
         this.recursoService = recursoService;
         this.reservaRepository = reservaRepository;
         this.notificationService = notificationService;
         this.modelMapper = modelMapper;
+        this.userServiceClient = userServiceClient;
     }
 
     @Override
@@ -124,5 +129,22 @@ public class ReservaService implements IReservaService {
         recursoService.updateRecursoEstado(reserva.getRecurso().getId(), RecursoEntity.EstadoRecurso.DISPONIBLE);
 
         return modelMapper.map(reserva, ReservaResponseDto.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReservaResponseDto> getReservasByEmail(String email) {
+        ResponseEntity<UserAuthDto> userResponse = userServiceClient.getByEmail(email);
+
+        if (userResponse.getStatusCode() != HttpStatus.OK || userResponse.getBody() == null) {
+            throw new RuntimeException("Usuario no encontrado o error en el servicio de usuarios");
+        }
+
+        UserAuthDto user = userResponse.getBody();
+
+        List<ReservaEntity> reservas = reservaRepository.findByUsuarioId(user.getNumIdent());
+        return reservas.stream()
+                .map(reserva -> modelMapper.map(reserva, ReservaResponseDto.class))
+                .collect(Collectors.toList());
     }
 }

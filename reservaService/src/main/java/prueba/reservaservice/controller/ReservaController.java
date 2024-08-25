@@ -23,7 +23,6 @@ public class ReservaController {
 
     // Cualquier usuario autenticado puede crear una reserva
     @PostMapping
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<ReservaResponseDto> createReserva(@RequestBody ReservaRequestDto reservaDto) {
         ReservaResponseDto savedReserva = reservaService.createReserva(reservaDto);
         return ResponseEntity.ok(savedReserva);
@@ -31,7 +30,6 @@ public class ReservaController {
 
     // Solo ADMIN puede actualizar una reserva
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ReservaResponseDto> updateReserva(@PathVariable Long id, @RequestBody ReservaRequestDto updatedReservaDto) {
         ReservaResponseDto savedReserva = reservaService.updateReserva(id, updatedReservaDto);
         return ResponseEntity.ok(savedReserva);
@@ -39,7 +37,6 @@ public class ReservaController {
 
     // Cualquier usuario autenticado puede consultar todas las reservas
     @GetMapping
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<ReservaResponseDto>> getAllReservas() {
         List<ReservaResponseDto> reservas = reservaService.getAllReservas();
         return ResponseEntity.ok(reservas);
@@ -47,7 +44,6 @@ public class ReservaController {
 
     // Cualquier usuario autenticado puede consultar una reserva por ID
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<ReservaResponseDto> getReservaById(@PathVariable Long id) {
         ReservaResponseDto reserva = reservaService.getReservaById(id);
         return ResponseEntity.ok(reserva);
@@ -55,8 +51,14 @@ public class ReservaController {
 
     // Solo ADMIN puede eliminar una reserva
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ReservaResponseDto> deleteReserva(@PathVariable Long id) {
         return ResponseEntity.ok(reservaService.cancelReserva(id));
     }
+
+    @GetMapping("/correo-reservas")
+    public ResponseEntity<List<ReservaResponseDto>> getReservasByEmail(@RequestParam String email) {
+        List<ReservaResponseDto> reservas = reservaService.getReservasByEmail(email);
+        return ResponseEntity.ok(reservas);
+    }
+
 }

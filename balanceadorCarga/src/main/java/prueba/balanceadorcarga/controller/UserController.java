@@ -37,7 +37,6 @@ public class UserController {
     }
 
     @GetMapping("/role/{idRol}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> getRoleCargo(@PathVariable String idRol) {
         return userServices.printRoleCargo(idRol);
     }

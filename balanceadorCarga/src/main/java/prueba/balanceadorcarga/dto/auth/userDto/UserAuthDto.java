@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserAuthDto {
+    private String numIdent;
     private String correo;
     private String password;
     private String roll;
