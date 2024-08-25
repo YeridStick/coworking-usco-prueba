@@ -25,7 +25,7 @@ public class GatewayConfig {
                         .and()
                         .path("/**")
                         .filters(f -> f.rewritePath("/(?<segment>.*)", "/${segment}"))
-                        .uri("lb://balanceador-carga"))
+                        .uri("lb://balanceadorCarga"))
                 .route("health_check", r -> r.path("/health").uri("http://localhost:4040"))
                 .build();
     }
@@ -33,7 +33,7 @@ public class GatewayConfig {
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:4173"));
+        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://127.0.0.1:4300"));
         corsConfig.setMaxAge(3600L);
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfig.addAllowedHeader("*");
