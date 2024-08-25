@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/auth/login", "/api/auth/verify-2fa").permitAll()
+                                .requestMatchers("/api/auth/login", "/api/auth/verify-2fa", "/api/balanceador/user").permitAll()
                                 .requestMatchers("/api/**").authenticated()
                                 .anyRequest().permitAll()
                 )
