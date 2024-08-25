@@ -93,4 +93,19 @@ public class UserService implements IUserservice {
         return Correo;
     }
 
+    @Override
+    public void updateTwoFactorCode(String email, String twoFactorCode) {
+        UserEntity user = userRepository.findByCorreo(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        user.setTwoFactorCode(twoFactorCode);
+        userRepository.save(user);
+    }
+    @Override
+    public void updateToken(String email, String token) {
+        UserEntity user = userRepository.findByCorreo(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        user.setToken(token);
+        user.setTwoFactorCode(null); // Limpiar el código de dos factores después de la autenticación
+        userRepository.save(user);
+    }
 }

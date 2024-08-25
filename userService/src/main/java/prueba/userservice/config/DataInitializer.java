@@ -2,6 +2,7 @@ package prueba.userservice.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,18 @@ import prueba.userservice.repository.UserRepository;
 public class DataInitializer {
 
     private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
+
+    @Value("${admin.numIdent}")
+    private String adminNumIdent;
+
+    @Value("${admin.nombre}")
+    private String adminNombre;
+
+    @Value("${admin.correo}")
+    private String adminCorreo;
+
+    @Value("${admin.password}")
+    private String adminPassword;
 
     @Bean
     CommandLineRunner initDatabase(RolesRepository rolesRepository,
@@ -46,17 +59,16 @@ public class DataInitializer {
             logger.info("USER role: {}", userRole);
 
             // Create admin user if it doesn't exist
-            String adminPassword = "adminPassword";  // You can change this to any password you prefer
-            if (userRepository.findByCorreo("admin@coworking.com").isEmpty()) {
+            if (userRepository.findByCorreo(adminCorreo).isEmpty()) {
                 logger.info("Creating admin user...");
                 UserEntity adminUser = new UserEntity();
-                adminUser.setNumIdent("00000001");
-                adminUser.setNombre("Administrador");
-                adminUser.setCorreo("admin@coworking.com");
+                adminUser.setNumIdent(adminNumIdent);
+                adminUser.setNombre(adminNombre);
+                adminUser.setCorreo(adminCorreo);
                 adminUser.setPassword(passwordEncoder.encode(adminPassword));
                 adminUser.setTipoRoll(adminRole);
                 userRepository.save(adminUser);
-                logger.info("Admin user created with email: admin@coworking.com and password: {}", adminPassword);
+                logger.info("Admin user created with email: {} and password: {}", adminCorreo, adminPassword);
             }
 
             logger.info("Database initialization completed.");

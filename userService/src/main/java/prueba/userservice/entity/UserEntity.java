@@ -27,6 +27,12 @@ public class UserEntity {
     @Column(name = "Password", nullable = false)
     private String password;
 
+    @Column(name = "two_factor_code")
+    private String twoFactorCode;
+
+    @Column(name = "token")
+    private String token;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TipoRoll", nullable = false)
     private RolesEntity tipoRoll;

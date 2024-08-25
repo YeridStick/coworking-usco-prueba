@@ -20,6 +20,8 @@
 		<module>authService</module>
 		<module>userService</module>
 		<module>reservaService</module>
+		<module>emailService</module>
+		<module>balanceadorCarga</module>
 		<!--<module>reporteService</module>-->
 		<!--<module>apiGateway</module>-->
 		<module>eurekaServer</module>

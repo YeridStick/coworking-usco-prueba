@@ -12,4 +12,6 @@ public interface IUserservice {
     UserResponseDto changeUserRole(String userId, String newRole);
     UserAuthDto findByEmail(String email);
     String getUserById(String userId);
+    void updateTwoFactorCode(String email, String twoFactorCode);
+    void updateToken(String email, String token);
 }

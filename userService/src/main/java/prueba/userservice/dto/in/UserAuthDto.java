@@ -11,4 +11,5 @@ public class UserAuthDto {
     private String correo;
     private String password;
     private String roll;
+    private String twoFactorCode;
 }

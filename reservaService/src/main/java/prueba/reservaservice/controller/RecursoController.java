@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import prueba.reservaservice.dto.horarioDto.RecursoDisponibilidadDto;
-import prueba.reservaservice.dto.recursos.RecursoRequestDto;
 import prueba.reservaservice.dto.recursos.RecursoResponseDto;
 import prueba.reservaservice.entity.RecursoEntity;
 import prueba.reservaservice.service.IRecursoService;

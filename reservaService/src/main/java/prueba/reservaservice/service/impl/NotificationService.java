@@ -23,7 +23,6 @@ public class NotificationService implements INotificacionesServices {
      */
     @Override
     public void sendReservationUpdate(ReservaEntity reserva) {
-        // Envía el objeto de reserva a todos los suscriptores del canal /topic/reservas
         messagingTemplate.convertAndSend("/topic/reservas", reserva);
     }
 }

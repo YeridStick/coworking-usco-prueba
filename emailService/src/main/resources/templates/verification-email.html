@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Código de Autenticación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .token-box {
+            padding: 15px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .text-smaill {
+            font-size: 10px;
+
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Código de Autenticación en Dos Pasos</h1>
+    <p>Has solicitado iniciar sesión en tu cuenta. Para continuar, por favor introduce el siguiente código de autenticación:</p>
+    <div class="token-box" th:text="${token}"></div>
+    <p>Introduce este código en el formulario de inicio de sesión para completar la autenticación.</p>
+    <p class="text-smaill">Si no has solicitado este código, por favor ignora este correo. Tu cuenta permanece segura.</p>
+    <p>Saludos: Coworking-usco</p>
+</div>
+</body>
+</html>

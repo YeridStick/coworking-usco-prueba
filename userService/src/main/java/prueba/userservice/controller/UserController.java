@@ -50,4 +50,16 @@ public class UserController {
     public String getUserById(@PathVariable String id) {
         return userService.getUserById(id);
     }
+
+    @PutMapping("/update-two-factor-code")
+    public ResponseEntity<Void> updateTwoFactorCode(@RequestParam String email, @RequestParam String twoFactorCode) {
+        userService.updateTwoFactorCode(email, twoFactorCode);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/update-token")
+    public ResponseEntity<Void> updateToken(@RequestParam String email, @RequestParam String token) {
+        userService.updateToken(email, token);
+        return ResponseEntity.ok().build();
+    }
 }
