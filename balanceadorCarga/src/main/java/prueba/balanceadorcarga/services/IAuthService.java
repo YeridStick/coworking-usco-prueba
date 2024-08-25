@@ -7,6 +7,6 @@ import prueba.balanceadorcarga.dto.auth.userDto.UserGinDTO;
 public interface IAuthService {
 
     TwoFactorResponseDTO login(UserGinDTO userGinDTO);
-
     LoginResponseDTO verifyTwoFactor(String email, String code);
+    LoginResponseDTO refreshToken(String authHeader);
 }

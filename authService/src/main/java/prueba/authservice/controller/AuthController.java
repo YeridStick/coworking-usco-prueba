@@ -36,4 +36,15 @@ public class AuthController {
             throw new ExcepcionPersonalizada("Error en la verificación de dos factores: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<LoginResponseDTO> refreshToken(@RequestHeader("Authorization") String authHeader) {
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            LoginResponseDTO response = authService.refreshToken(token);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            throw new ExcepcionPersonalizada("Error al refrescar el token: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

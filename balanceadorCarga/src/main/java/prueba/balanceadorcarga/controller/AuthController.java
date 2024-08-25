@@ -26,4 +26,10 @@ public class AuthController {
         LoginResponseDTO response = authService.verifyTwoFactor(email, code);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<LoginResponseDTO> refreshToken(@RequestHeader("Authorization") String authHeader) {
+        LoginResponseDTO response = authService.refreshToken(authHeader);
+        return ResponseEntity.ok(response);
+    }
 }

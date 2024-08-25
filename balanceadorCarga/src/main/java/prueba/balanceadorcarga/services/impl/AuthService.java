@@ -28,4 +28,10 @@ public class AuthService implements IAuthService {
         ResponseEntity<LoginResponseDTO> response = authClient.verifyTwoFactor(email, code);
         return response.getBody();
     }
+
+    @Override
+    public LoginResponseDTO refreshToken(String authHeader) {
+        ResponseEntity<LoginResponseDTO> response = authClient.refreshToken(authHeader);
+        return response.getBody();
+    }
 }

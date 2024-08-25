@@ -66,4 +66,18 @@ public class JwtHelpers {
             throw new RuntimeException("Invalid JWT token", e);
         }
     }
+
+    public String refreshToken(String token) {
+        try {
+            Claims claims = getClaimsFromToken(token);
+            String correo = claims.getSubject();
+            String role = claims.get("role", String.class);
+
+            // Crear un nuevo token con la misma información pero nueva fecha de expiración
+            return createTokenWithRole(correo, role);
+        } catch (Exception e) {
+            log.error("Error refreshing token", e);
+            throw new RuntimeException("Error refreshing token", e);
+        }
+    }
 }

@@ -15,4 +15,7 @@ public interface AuthClient {
 
     @PostMapping("/auth/verify-2fa")
     ResponseEntity<LoginResponseDTO> verifyTwoFactor(@RequestParam String email, @RequestParam String code);
+
+    @PostMapping("/auth/refresh-token")
+    ResponseEntity<LoginResponseDTO> refreshToken(@RequestHeader("Authorization") String authHeader);
 }

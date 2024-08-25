@@ -1,5 +1,6 @@
 package prueba.authservice.service.imp;
 
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -72,5 +73,22 @@ public class AuthService {
         Random random = new Random();
         int number = random.nextInt(999999);
         return String.format("%06d", number);
+    }
+
+    public LoginResponseDTO refreshToken(String token) throws AuthenticationException {
+        if (!jwtHelpers.validateToken(token)) {
+            throw new AuthenticationException("Token inválido o expirado");
+        }
+
+        String newToken = jwtHelpers.refreshToken(token);
+        Claims claims = jwtHelpers.getClaimsFromToken(newToken);
+        String email = claims.getSubject();
+        String role = claims.get("role", String.class);
+        Instant expiresAt = claims.getExpiration().toInstant();
+
+        // Actualizar el token en la base de datos del usuario si es necesario
+        userClient.updateUserToken(email, newToken);
+
+        return new LoginResponseDTO(newToken, role, email, expiresAt);
     }
 }
