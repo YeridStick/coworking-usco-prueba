@@ -71,8 +71,8 @@ Alternativamente, puede consultar los logs de cada servicio al iniciar, donde se
 
 - Kafka UI: http://localhost:8080
 - pgAdmin: http://localhost:5050
-  - Email: admin@coworking.com
-  - Password: admin_password
+  - Email: yeridstickramirez@gmail.com
+  - Password: Stick9122003.
 
 ## Credenciales de Administrador
 
