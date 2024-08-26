@@ -42,11 +42,13 @@ public class UserController {
     }
 
     @PutMapping("/user/update-two-factor-code")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateTwoFactorCode(@RequestParam String email, @RequestParam String twoFactorCode) {
         return userServices.updateTwoFactorCode(email, twoFactorCode);
     }
 
     @PutMapping("/user/update-token")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateToken(@RequestParam String email, @RequestParam String token) {
         return userServices.updateToken(email, token);
     }

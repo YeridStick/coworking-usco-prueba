@@ -27,8 +27,16 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/auth/login", "/api/auth/verify-2fa", "/api/balanceador/user").permitAll()
-                                .requestMatchers("/api/**").authenticated()
+                                // Rutas protegidas para ADMIN
+                                .requestMatchers(
+                                        "/api/balanceador/user/update-two-factor-code",
+                                        "/api/balanceador/user/update-token",
+                                        "/api/reservas/recursos/{id}/estado/{nuevoEstado}",
+                                        "/api/reservas/tipos-recurso/{id}/categoria"
+                                ).hasRole("ADMIN")
+
+                                // Cualquier otra ruta bajo /api/** es pública
+                                .requestMatchers("/api/**").permitAll()
                                 .anyRequest().permitAll()
                 )
                 .sessionManagement(sessionManagement ->

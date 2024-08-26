@@ -165,7 +165,6 @@ public class ReservaController {
 
     @PatchMapping("/tipos-recurso/{id}/categoria")
     @PreAuthorize("hasRole('ADMIN')")
-
     public ResponseEntity<TipoRecursoResponseDto> updateTipoRecursoCategoria(
             @PathVariable Long id,
             @RequestParam TipoRecursoEntity.CategoriaRecurso nuevaCategoria) {
