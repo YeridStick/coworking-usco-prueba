@@ -1,9 +1,12 @@
 package prueba.balanceadorcarga.services;
 
 import org.springframework.http.ResponseEntity;
+import prueba.balanceadorcarga.dto.auth.UserEntity;
 import prueba.balanceadorcarga.dto.userDto.in.UserAuthDto;
 import prueba.balanceadorcarga.dto.userDto.in.UserCreationDto;
 import prueba.balanceadorcarga.dto.userDto.out.UserResponseDto;
+
+import java.util.List;
 
 public interface IUserServices {
 
@@ -20,4 +23,5 @@ public interface IUserServices {
     ResponseEntity<Void> updateTwoFactorCode(String email, String twoFactorCode);
 
     ResponseEntity<Void> updateToken(String email, String token);
+    List<UserEntity> getAllUsers();
 }

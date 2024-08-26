@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import prueba.balanceadorcarga.dto.auth.UserEntity;
 import prueba.balanceadorcarga.dto.userDto.in.UserAuthDto;
 import prueba.balanceadorcarga.dto.userDto.in.UserCreationDto;
 import prueba.balanceadorcarga.dto.userDto.out.UserResponseDto;
 import prueba.balanceadorcarga.services.IUserServices;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/balanceador")
@@ -51,5 +54,10 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateToken(@RequestParam String email, @RequestParam String token) {
         return userServices.updateToken(email, token);
+    }
+
+    @GetMapping("/all-users")
+    public List<UserEntity> getAllUsers(){
+        return userServices.getAllUsers();
     }
 }

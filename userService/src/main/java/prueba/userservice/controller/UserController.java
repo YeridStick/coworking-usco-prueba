@@ -14,6 +14,8 @@ import prueba.userservice.dto.out.UserResponseDto;
 import prueba.userservice.entity.UserEntity;
 import prueba.userservice.services.IUserservice;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/user")
 @Tag(name = "Usuario")
@@ -61,5 +63,10 @@ public class UserController {
     public ResponseEntity<Void> updateToken(@RequestParam String email, @RequestParam String token) {
         userService.updateToken(email, token);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/all-users")
+    public List<UserEntity> getAllUsers() {
+        return userService.getAllUsers();
     }
 }

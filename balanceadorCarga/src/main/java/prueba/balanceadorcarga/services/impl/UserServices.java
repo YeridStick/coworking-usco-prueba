@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import prueba.balanceadorcarga.client.UserServiceClient;
+import prueba.balanceadorcarga.dto.auth.UserEntity;
 import prueba.balanceadorcarga.dto.userDto.in.UserAuthDto;
 import prueba.balanceadorcarga.dto.userDto.in.UserCreationDto;
 import prueba.balanceadorcarga.dto.userDto.out.UserResponseDto;
 import prueba.balanceadorcarga.services.IUserServices;
+
+import java.util.List;
 
 @Service
 public class UserServices implements IUserServices {
@@ -48,5 +51,9 @@ public class UserServices implements IUserServices {
     @Override
     public ResponseEntity<Void> updateToken(String email, String token) {
         return userServiceClient.updateToken(email, token);
+    }
+    @Override
+    public List<UserEntity> getAllUsers(){
+        return userServiceClient.getAllUsers();
     }
 }

@@ -17,6 +17,8 @@ import prueba.userservice.repository.RolesRepository;
 import prueba.userservice.repository.UserRepository;
 import prueba.userservice.services.IUserservice;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -68,6 +70,10 @@ public class UserService implements IUserservice {
         UserEntity updatedUser = userRepository.save(user);
 
         return modelMapper.map(updatedUser, UserResponseDto.class);
+    }
+    @Override
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override

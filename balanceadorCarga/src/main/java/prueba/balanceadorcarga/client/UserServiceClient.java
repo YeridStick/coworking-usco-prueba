@@ -3,9 +3,12 @@ package prueba.balanceadorcarga.client;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import prueba.balanceadorcarga.dto.auth.UserEntity;
 import prueba.balanceadorcarga.dto.userDto.in.UserAuthDto;
 import prueba.balanceadorcarga.dto.userDto.in.UserCreationDto;
 import prueba.balanceadorcarga.dto.userDto.out.UserResponseDto;
+
+import java.util.List;
 
 @FeignClient(name = "userService")
 public interface UserServiceClient {
@@ -31,4 +34,7 @@ public interface UserServiceClient {
 
     @GetMapping("/api/role/id/{idRol}")
     ResponseEntity<String> getRoleCargo(@PathVariable String idRol);
+
+    @GetMapping("/api/user/all-users")
+    List<UserEntity> getAllUsers();
 }
