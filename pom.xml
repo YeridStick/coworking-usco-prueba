@@ -23,7 +23,8 @@
 		<module>emailService</module>
 		<module>balanceadorCarga</module>
 		<!--<module>reporteService</module>-->
-		<!--<module>apiGateway</module>-->
+		<module>apiGateway</module>
+		<module>emailService</module>
 		<module>eurekaServer</module>
 		<!--<module>configServer</module>-->
 	</modules>
