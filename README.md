@@ -101,3 +101,6 @@ Para añadir nuevos microservicios, cree un nuevo módulo en el `pom.xml` raíz 
 - Ajuste la configuración de los servicios en `application.properties` o `application.yml` según sea necesario.
 - Actualice y rote regularmente las credenciales de administrador y otras cuentas privilegiadas.
 - La asignación dinámica de puertos facilita el despliegue y escalado de servicios, pero asegúrese de que su configuración de red y firewall permita esta flexibilidad.
+
+## Digrama de Clases 
+- https://drive.google.com/drive/folders/1BJD1gGmcF70NqYuXdlcWMFhd3oc8yE50?usp=drive_link
