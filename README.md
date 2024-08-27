@@ -103,4 +103,4 @@ Para añadir nuevos microservicios, cree un nuevo módulo en el `pom.xml` raíz 
 - La asignación dinámica de puertos facilita el despliegue y escalado de servicios, pero asegúrese de que su configuración de red y firewall permita esta flexibilidad.
 
 ## Digrama de Clases 
-- https://drive.google.com/drive/folders/1BJD1gGmcF70NqYuXdlcWMFhd3oc8yE50?usp=drive_link
+- https://drive.google.com/file/d/12521KCzOuPkJ8a9bC8ecqJxjD2XM5qBO/view?usp=sharing
